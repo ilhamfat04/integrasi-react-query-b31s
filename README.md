@@ -10,6 +10,17 @@ npm i concurrently
 ```
 
 - Add code below inside packagejson file (server side)
+
+```javascript
+...
+"scripts": {
+   "start": "nodemon server.js",
+   "client": "npm start --prefix ../client",
+   "dev": "concurrently \"npm start\" \"npm run client\""
+},
+...
+```
+
 - Run this code:
 
 ```
