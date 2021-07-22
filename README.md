@@ -11,7 +11,7 @@ Before doing the integration, we make some preparations, including:
 npm i concurrently
 ```
 
-- Add code below inside packagejson file (server side)
+- Add code below inside package.json file `server/package.json`
 
 ```javascript
 ...
@@ -27,6 +27,24 @@ npm i concurrently
 
 ```
 npm run dev
+```
+
+- Install package CORS
+
+```
+npm i cors
+```
+
+- Add code below inside index.js file `server/index.js`
+
+```javascript
+...
+const port = 5000
+
+app.use(express.json())
+app.use(cors())
+...
+
 ```
 
 ## Client Side
