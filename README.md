@@ -1,5 +1,7 @@
 # Prepare
 
+## Server Side
+
 Before doing the integration, we make some preparations, including:
 
 - Store front-end (client) & back-end (server) templates in one folder
@@ -26,3 +28,7 @@ npm i concurrently
 ```
 npm run dev
 ```
+
+## Client Side
+
+create API config in client side
