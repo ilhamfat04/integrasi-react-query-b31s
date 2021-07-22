@@ -33,8 +33,6 @@ npm run dev
 
 Create API config in client side
 
-api.js...
-
 ```javascript
 import axios from "axios";
 
