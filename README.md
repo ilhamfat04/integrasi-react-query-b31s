@@ -31,7 +31,7 @@ npm run dev
 
 ## Client Side
 
-Create API config in client side
+Create API config in client side `client/src/config/api.js`
 
 ```javascript
 import axios from "axios";
