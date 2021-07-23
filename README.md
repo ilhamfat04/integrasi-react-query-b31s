@@ -49,6 +49,12 @@ app.use(cors())
 
 ## Client Side
 
+We need to install axios on your front end
+
+```javascript
+npm install axios
+```
+
 Create API config in client side `client/src/config/api.js`
 
 ```javascript
