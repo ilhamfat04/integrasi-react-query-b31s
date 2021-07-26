@@ -11,8 +11,27 @@ import imgEmpty from "../assets/empty.svg";
 
 import dataProduct from "../fakeData/product";
 
+// Import useQuery
+import { useQuery } from "react-query";
+
+// API config
+import { API } from "../config/api";
+
 export default function ProductAdmin() {
   let history = useHistory();
+  let api = API();
+
+  // Fetching categories data from database
+  let { data: products, refetch } = useQuery("productsCache", async () => {
+    const config = {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + localStorage.token,
+      },
+    };
+    const response = await api.get("/products", config);
+    return response.data;
+  });
 
   const [product, setProduct] = useState(dataProduct);
   const [idDelete, setIdDelete] = useState(null);
@@ -68,7 +87,7 @@ export default function ProductAdmin() {
             </Button>
           </Col>
           <Col xs="12">
-            {product.length != 0 ? (
+            {products?.length != 0 ? (
               <Table striped hover size="lg" variant="dark">
                 <thead>
                   <tr>
@@ -84,12 +103,12 @@ export default function ProductAdmin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {product.map((item, index) => (
+                  {products?.map((item, index) => (
                     <tr>
                       <td className="align-middle text-center">{index + 1}</td>
                       <td className="align-middle">
                         <img
-                          src={item.url}
+                          src={item.image}
                           style={{
                             width: "80px",
                             height: "80px",
@@ -115,7 +134,7 @@ export default function ProductAdmin() {
                       <td className="align-middle">
                         {rupiahFormat.convert(item.price)}
                       </td>
-                      <td className="align-middle">{item.stock}</td>
+                      <td className="align-middle">{item.qty}</td>
                       <td className="align-middle">
                         <Button
                           onClick={() => {

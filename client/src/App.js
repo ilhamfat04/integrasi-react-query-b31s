@@ -3,8 +3,8 @@ import { Switch, Route, useHistory } from "react-router-dom";
 import { UserContext } from "./context/userContext";
 
 import Auth from "./pages/Auth";
-import Shop from "./pages/Shop";
 import Product from "./pages/Product";
+import DetailProduct from "./pages/DetailProduct";
 import Complain from "./pages/Complain";
 import Profile from "./pages/Profile";
 import ComplainAdmin from "./pages/ComplainAdmin";
@@ -28,7 +28,7 @@ function App() {
       history.push("/auth");
     } else {
       if (state.user.status == "admin") {
-        history.push("/add-product");
+        history.push("/complain-admin");
         // history.push("/complain-admin");
       } else if (state.user.status == "customer") {
         history.push("/");
@@ -74,9 +74,9 @@ function App() {
 
   return (
     <Switch>
-      <Route exact path="/" component={Shop} />
+      <Route exact path="/" component={Product} />
       <Route path="/auth" component={Auth} />
-      <Route path="/product/:id" component={Product} />
+      <Route path="/product/:id" component={DetailProduct} />
       <Route path="/complain" component={Complain} />
       <Route path="/profile" component={Profile} />
       <Route path="/complain-admin" component={ComplainAdmin} />

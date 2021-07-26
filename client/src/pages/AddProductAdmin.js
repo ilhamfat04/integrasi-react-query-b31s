@@ -17,6 +17,7 @@ export default function AddProductAdmin() {
   let history = useHistory();
   let api = API();
 
+  // const [categories, setCategories] = useState([]); //Store all category data
   const [categoryId, setCategoryId] = useState([]); //Save the selected category id
   const [preview, setPreview] = useState(null); //For image preview
   const [form, setForm] = useState({
@@ -89,7 +90,6 @@ export default function AddProductAdmin() {
 
       // Insert product data
       const response = await api.post("/product", config);
-      console.log(response);
 
       history.push("/product-admin");
     } catch (error) {
@@ -157,7 +157,6 @@ export default function AddProductAdmin() {
                 onChange={handleChange}
                 className="input-edit-category mt-4"
               />
-
               <div className="card-form-input mt-4 px-2 py-1 pb-2">
                 <div
                   className="text-secondary mb-1"
