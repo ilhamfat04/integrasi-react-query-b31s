@@ -6,8 +6,10 @@ import NavbarAdmin from "../components/NavbarAdmin";
 
 import dataCategory from "../fakeData/category";
 
+// Import useMutation
 import { useMutation } from "react-query";
 
+// Import API config
 import { API } from "../config/api";
 
 export default function AddCategoryAdmin() {

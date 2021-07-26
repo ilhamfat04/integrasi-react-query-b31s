@@ -18,9 +18,9 @@ export default function Register() {
 
   const [message, setMessage] = useState(null);
   const [form, setForm] = useState({
-    name: "jody",
-    email: "jody@mail.com",
-    password: "123456",
+    name: "",
+    email: "",
+    password: "",
   });
 
   const { name, email, password } = form;

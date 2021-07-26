@@ -4,8 +4,10 @@ import { useHistory } from "react-router";
 
 import NavbarAdmin from "../components/NavbarAdmin";
 
+// Import useQuery & useMutation
 import { useQuery, useMutation } from "react-query";
 
+// Import API config
 import { API } from "../config/api";
 
 export default function AddProductAdmin() {
@@ -15,7 +17,6 @@ export default function AddProductAdmin() {
   let history = useHistory();
   let api = API();
 
-  // const [categories, setCategories] = useState([]); //Store all category data
   const [categoryId, setCategoryId] = useState([]); //Save the selected category id
   const [preview, setPreview] = useState(null); //For image preview
   const [form, setForm] = useState({

@@ -3,8 +3,10 @@ import { UserContext } from "../../context/userContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
+// Import useMutation
 import { useMutation } from "react-query";
 
+// Import API config
 import { API } from "../../config/api";
 
 export default function Login() {
@@ -18,8 +20,8 @@ export default function Login() {
 
   const [message, setMessage] = useState(null);
   const [form, setForm] = useState({
-    email: "jody@mail.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   const { email, password } = form;
