@@ -44,7 +44,7 @@ exports.register = async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.TOKEN_KEY);
 
     res.status(200).send({
-      status: "success...",
+      status: "success",
       data: {
         name: newUser.name,
         email: newUser.email,
@@ -102,7 +102,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: userExist.id }, process.env.TOKEN_KEY);
 
     res.status(200).send({
-      status: "success...",
+      status: "success",
       data: {
         id: userExist.id,
         name: userExist.name,
@@ -140,7 +140,7 @@ exports.checkAuth = async (req, res) => {
     }
 
     res.send({
-      status: "success...",
+      status: "success",
       data: {
         user: {
           id: dataUser.id,

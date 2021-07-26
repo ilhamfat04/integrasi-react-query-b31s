@@ -6,7 +6,10 @@ exports.auth = (req, res, next) => {
   // check if user send token via Authorization header or not
   if (!token) {
     // rejected request and send response access denied
-    return res.status(401).send({ message: "Access denied!" });
+    return res.status(401).send({
+      status: "failed",
+      message: "Access denied!",
+    });
   }
 
   try {
@@ -15,6 +18,9 @@ exports.auth = (req, res, next) => {
     next(); // if token valid go to the next request
   } catch (error) {
     // if token not valid send response invalid token
-    res.status(400).send({ message: "Invalid token" });
+    res.status(400).send({
+      status: "failed",
+      message: "Invalid token",
+    });
   }
 };
