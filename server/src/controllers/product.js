@@ -1,8 +1,8 @@
 const { product, user, category, productCategory } = require("../../models");
 
-exports.getProduct = async (req, res) => {
+exports.getProducts = async (req, res) => {
   try {
-    const data = await product.findAll({
+    let data = await product.findAll({
       include: [
         {
           model: user,
@@ -29,6 +29,65 @@ exports.getProduct = async (req, res) => {
       },
     });
 
+    data = JSON.parse(JSON.stringify(data));
+
+    data = data.map((item) => {
+      return { ...item, image: process.env.PATH_FILE + item.image };
+    });
+
+    res.send({
+      status: "success...",
+      data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+exports.getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let data = await product.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: user,
+          as: "user",
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "password"],
+          },
+        },
+        {
+          model: category,
+          as: "categories",
+          through: {
+            model: productCategory,
+            as: "bridge",
+            attributes: [],
+          },
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "idUser"],
+      },
+    });
+
+    data = JSON.parse(JSON.stringify(data));
+
+    data = {
+      ...data,
+      image: process.env.PATH_FILE + data.image,
+    };
+
     res.send({
       status: "success...",
       data,
@@ -44,32 +103,26 @@ exports.getProduct = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
   try {
-    const { category: categoryName, ...data } = req.body;
+    let { categoryId } = req.body;
+    categoryId = categoryId.split(",");
 
-    const newProduct = await product.create({
-      ...data,
-      image: req.file.filename, // image that passed from middleware will in the req.file 
-      idUser: req.user.id, // got from authentication middleware
+    const data = {
+      name: req.body.name,
+      desc: req.body.desc,
+      price: req.body.price,
+      image: req.file.filename,
+      qty: req.body.qty,
+      idUser: req.user.id,
+    };
 
+    let newProduct = await product.create(data);
+
+    const productCategoryData = categoryId.map((item) => {
+      return { idProduct: newProduct.id, idCategory: parseInt(item) };
     });
-    const categoryData = await category.findOne({
-      where: {
-        name: categoryName,
-      },
-    });
 
-    if (categoryData) {
-      await productCategory.create({
-        idCategory: categoryData.id,
-        idProduct: newProduct.id,
-      });
-    } else {
-      const newCategory = await category.create({ name: categoryName });
-      await productCategory.create({
-        idCategory: newCategory.id,
-        idProduct: newProduct.id,
-      });
-    }
+    await productCategory.bulkCreate(productCategoryData);
+
     let productData = await product.findOne({
       where: {
         id: newProduct.id,
@@ -99,18 +152,103 @@ exports.addProduct = async (req, res) => {
         exclude: ["createdAt", "updatedAt", "idUser"],
       },
     });
-    productData = JSON.parse(JSON.stringify(productData))
+    productData = JSON.parse(JSON.stringify(productData));
 
     res.send({
       status: "success...",
       data: {
         ...productData,
-        image: 'http://localhost:5000/uploads/' + productData.image
+        image: process.env.PATH_FILE + productData.image,
       },
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let { categoryId } = req.body;
+    categoryId = await categoryId.split(",");
+
+    const data = {
+      name: req?.body?.name,
+      desc: req?.body.desc,
+      price: req?.body?.price,
+      image: req?.file?.filename,
+      qty: req?.body?.qty,
+      idUser: req?.user?.id,
+    };
+
+    await productCategory.destroy({
+      where: {
+        idProduct: id,
+      },
+    });
+
+    let productCategoryData = [];
+    if (categoryId != 0 && categoryId[0] != "") {
+      productCategoryData = categoryId.map((item) => {
+        return { idProduct: parseInt(id), idCategory: parseInt(item) };
+      });
+    }
+
+    if (productCategoryData.length != 0) {
+      await productCategory.bulkCreate(productCategoryData);
+    }
+
+    await product.update(data, {
+      where: {
+        id,
+      },
+    });
+
+    res.send({
+      status: "success",
+      data: {
+        id,
+        data,
+        productCategoryData,
+        image: req?.file?.filename,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
+      status: "failed",
+      message: "Server Error",
+    });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await product.destroy({
+      where: {
+        id,
+      },
+    });
+
+    await productCategory.destroy({
+      where: {
+        idProduct: id,
+      },
+    });
+
+    res.send({
+      status: "success",
+      message: `Delete product id: ${id} finished`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({
       status: "failed",
       message: "Server Error",
     });
