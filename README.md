@@ -43,9 +43,7 @@ For more info about react-query please refer to this [link](https://react-query.
 
   ```javascript
   const client = new QueryClient();
-  ```
 
-  ```javascript
   ReactDOM.render(
     <React.StrictMode>
       <UserContextProvider>
