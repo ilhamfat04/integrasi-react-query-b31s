@@ -11,24 +11,17 @@ import imgEmpty from "../assets/empty.svg";
 
 import dataProduct from "../fakeData/product";
 
-// Import useQuery and useMutation
-import { useQuery, useMutation } from "react-query";
+// Import useQuery and useMutation here ...
 
-// API config
-import { API } from "../config/api";
+// Get API config here ...
 
 export default function ProductAdmin() {
   let history = useHistory();
   let api = API();
 
-  // Variabel for delete product data
-  const [idDelete, setIdDelete] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
+  // Create variabel for delete product data with useState here ...
 
-  // Modal Confirm delete data
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // Init useState & function for handle show-hide modal confirm here ...
 
   const title = "Product admin";
   document.title = "DumbMerch | " + title;
@@ -53,37 +46,12 @@ export default function ProductAdmin() {
     history.push("/edit-product/" + id);
   };
 
-  // For get id product & show modal confirm delete data
-  const handleDelete = (id) => {
-    setIdDelete(id);
-    handleShow();
-  };
+  // Create function handle get product id & show modal confirm delete data here ...
 
+  // Create function for handle delete product with useMutation here ...
   // If confirm is true, execute delete data
-  const deleteById = useMutation(async (id) => {
-    try {
-      const config = {
-        method: "DELETE",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-      };
-      await api.delete(`/product/${id}`, config);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  });
 
-  useEffect(() => {
-    if (confirmDelete) {
-      // Close modal confirm delete data
-      handleClose();
-      // execute delete data by id function
-      deleteById.mutate(idDelete);
-      setConfirmDelete(null);
-    }
-  }, [confirmDelete]);
+  // Call function for handle close modal and execute delete data with useEffect here ...
 
   return (
     <>

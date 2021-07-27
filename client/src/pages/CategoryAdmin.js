@@ -9,11 +9,9 @@ import dataCategory from "../fakeData/category";
 
 import imgEmpty from "../assets/empty.svg";
 
-// Import useQuery and useMutation
-import { useQuery, useMutation } from "react-query";
+// Import useQuery and useMutation here ...
 
-// Get API config
-import { API } from "../config/api";
+// Get API config here ...
 
 export default function CategoryAdmin() {
   const title = "Category admin";
@@ -22,13 +20,9 @@ export default function CategoryAdmin() {
   let history = useHistory();
   let api = API();
 
-  // Variabel for delete category data
-  const [idDelete, setIdDelete] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
+  // Create variabel for delete category data with useState here ...
 
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // Init useState & function for handle show-hide modal confirm here ...
 
   // Fetching categories data from database
   let { data: categories, refetch } = useQuery("categoriesCache", async () => {
@@ -40,37 +34,12 @@ export default function CategoryAdmin() {
     history.push(`edit-category/${id}`);
   };
 
-  // For get id category & show modal confirm delete data
-  const handleDelete = (id) => {
-    setIdDelete(id);
-    handleShow();
-  };
+  // Create function handle get category id & show modal confirm delete data here ...
 
+  // Create function for handle delete category with useMutation here ...
   // If confirm is true, execute delete data
-  const deleteById = useMutation(async (id) => {
-    try {
-      const config = {
-        method: "DELETE",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-      };
-      await api.delete(`/category/${id}`, config);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  });
 
-  useEffect(() => {
-    if (confirmDelete) {
-      // Close modal confirm delete data
-      handleClose();
-      // execute delete data by id function
-      deleteById.mutate(idDelete);
-      setConfirmDelete(null);
-    }
-  }, [confirmDelete]);
+  // Call function for handle close modal and execute delete data with useEffect here ...
 
   const addCategory = () => {
     history.push("/add-category");
