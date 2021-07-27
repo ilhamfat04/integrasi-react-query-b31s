@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-// Init QueryClient and QueryClientProvider
-import { QueryClient, QueryClientProvider } from "react-query";
+
+// Init QueryClient and QueryClientProvider from react-query here ...
+
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -15,17 +16,16 @@ import Favicon from "./assets/DumbMerch.png";
 const favicon = document.getElementById("idFavicon");
 favicon.setAttribute("href", Favicon);
 
-// Init Client
-const client = new QueryClient();
+// Init Client from QueryClient() here ...
 
 ReactDOM.render(
   <React.StrictMode>
     <UserContextProvider>
-      <QueryClientProvider client={client}>
-        <Router>
-          <App />
-        </Router>
-      </QueryClientProvider>
+      {/* Add opening QueryClientProvider component and client as props */}
+      <Router>
+        <App />
+      </Router>
+      {/* Add closing QueryClientProvider component */}
     </UserContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

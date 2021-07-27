@@ -3,9 +3,9 @@ import { UserContext } from "../../context/userContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
-import { useMutation } from "react-query";
+// Import useMutation from react-query here ...
 
-import { API } from "../../config/api";
+// Get API config here ...
 
 export default function Register() {
   const title = "Register";
@@ -17,11 +17,8 @@ export default function Register() {
   const [state, dispatch] = useContext(UserContext);
 
   const [message, setMessage] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+
+  // Create variabel for store data with useState here ...
 
   const { name, email, password } = form;
 
@@ -32,58 +29,7 @@ export default function Register() {
     });
   };
 
-  const handleSubmit = useMutation(async (e) => {
-    try {
-      e.preventDefault();
-
-      // Data body
-      const body = JSON.stringify(form);
-
-      // Configuration Content-type
-      const config = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: body,
-      };
-
-      // Insert data user to database
-      const response = await api.post("/register", config);
-
-      console.log(response);
-
-      // Notification
-      if (response.status == "success") {
-        const alert = (
-          <Alert variant="success" className="py-1">
-            Success
-          </Alert>
-        );
-        setMessage(alert);
-        setForm({
-          name: "",
-          email: "",
-          password: "",
-        });
-      } else {
-        const alert = (
-          <Alert variant="danger" className="py-1">
-            Failed
-          </Alert>
-        );
-        setMessage(alert);
-      }
-    } catch (error) {
-      const alert = (
-        <Alert variant="danger" className="py-1">
-          Failed
-        </Alert>
-      );
-      setMessage(alert);
-      console.log(error);
-    }
-  });
+  // Create function for handle insert data process with useMutation here ...
 
   return (
     <div className="d-flex justify-content-center">

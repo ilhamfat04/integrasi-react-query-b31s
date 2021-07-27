@@ -4,11 +4,9 @@ import { useHistory } from "react-router";
 
 import NavbarAdmin from "../components/NavbarAdmin";
 
-// Import useQuery & useMutation
-import { useQuery, useMutation } from "react-query";
+// Import useMutation and useQuery from react-query here ...
 
-// Import API config
-import { API } from "../config/api";
+// Get API config here ...
 
 export default function AddProductAdmin() {
   const title = "Product admin";
@@ -17,16 +15,10 @@ export default function AddProductAdmin() {
   let history = useHistory();
   let api = API();
 
-  // const [categories, setCategories] = useState([]); //Store all category data
   const [categoryId, setCategoryId] = useState([]); //Save the selected category id
   const [preview, setPreview] = useState(null); //For image preview
-  const [form, setForm] = useState({
-    image: "",
-    name: "",
-    desc: "",
-    price: "",
-    qty: "",
-  }); //Store product data
+
+  // Create variabel for store data with useState here ...
 
   // Fetching category data
   let { data: categories, refetch } = useQuery("categoriesCache", async () => {
@@ -66,36 +58,7 @@ export default function AddProductAdmin() {
     }
   };
 
-  const handleSubmit = useMutation(async (e) => {
-    try {
-      e.preventDefault();
-
-      // Store data with FormData as object
-      const formData = new FormData();
-      formData.set("image", form?.image[0], form?.image[0]?.name);
-      formData.set("name", form.name);
-      formData.set("desc", form.desc);
-      formData.set("price", form.price);
-      formData.set("qty", form.qty);
-      formData.set("categoryId", categoryId);
-
-      // Configuration
-      const config = {
-        method: "POST",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-        body: formData,
-      };
-
-      // Insert product data
-      const response = await api.post("/product", config);
-
-      history.push("/product-admin");
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  // Create function for handle insert product data with useMutation here ...
 
   return (
     <>

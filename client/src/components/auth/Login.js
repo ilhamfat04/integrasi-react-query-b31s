@@ -3,11 +3,9 @@ import { UserContext } from "../../context/userContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
-// Import useMutation
-import { useMutation } from "react-query";
+// Import useMutation from react-query here ...
 
-// Import API config
-import { API } from "../../config/api";
+// Get API config here ...
 
 export default function Login() {
   const title = "Login";
@@ -19,10 +17,8 @@ export default function Login() {
   const [state, dispatch] = useContext(UserContext);
 
   const [message, setMessage] = useState(null);
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+
+  // Create variabel for store data with useState here ...
 
   const { email, password } = form;
 
@@ -33,66 +29,7 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = useMutation(async (e) => {
-    try {
-      e.preventDefault();
-
-      // Data body
-      const body = JSON.stringify(form);
-
-      // Configuration
-      const config = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: body,
-      };
-
-      // Insert data for login process
-      const response = await api.post("/login", config);
-
-      console.log(response);
-
-      // Checking process
-      if (response.status == "success") {
-        // Send data to useContext
-        dispatch({
-          type: "LOGIN_SUCCESS",
-          payload: response.data,
-        });
-
-        // Status check
-        if (response.data.status == "admin") {
-          history.push("/complain-admin");
-        } else {
-          history.push("/");
-        }
-
-        const alert = (
-          <Alert variant="success" className="py-1">
-            Login success
-          </Alert>
-        );
-        setMessage(alert);
-      } else {
-        const alert = (
-          <Alert variant="danger" className="py-1">
-            Failed success
-          </Alert>
-        );
-        setMessage(alert);
-      }
-    } catch (error) {
-      const alert = (
-        <Alert variant="danger" className="py-1">
-          Login failed
-        </Alert>
-      );
-      setMessage(alert);
-      console.log(error);
-    }
-  });
+  // Create function for handle login process with useMutation here ...
 
   return (
     <div className="d-flex justify-content-center">
