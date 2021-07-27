@@ -11,6 +11,7 @@ import imgEmpty from "../assets/empty.svg";
 // Import useQuery
 import { useQuery } from "react-query";
 
+// Get API config
 import { API } from "../config/api";
 
 export default function CategoryAdmin() {
