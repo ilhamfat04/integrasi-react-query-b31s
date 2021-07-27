@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "client": "npm start --prefix ../client",
-    "dev": "concurrently \"npm start\" \"npm run client\""
+    "guide": "Write the script here .."
   },
   "author": "",
   "license": "ISC",
