@@ -7,61 +7,18 @@ import Navbar from "../components/Navbar";
 
 import dataProduct from "../fakeData/product";
 
-// Import useQuery and useMutation
-import { useQuery, useMutation } from "react-query";
+// Import useQuery and useMutation here ...
 
-// API config
-import { API } from "../config/api";
+// Get API config here ...
 
 export default function DetailProduct() {
   let history = useHistory();
   let { id } = useParams();
   let api = API();
 
-  // Fetching product data from database
-  let { data: product, refetch } = useQuery("Cache", async () => {
-    const config = {
-      method: "GET",
-      headers: {
-        Authorization: "Basic " + localStorage.token,
-      },
-    };
-    const response = await api.get("/product/" + id, config);
-    return response.data;
-  });
+  // Create process for fetching product by id data from database with useQuery here ...
 
-  const handleBuy = useMutation(async () => {
-    try {
-      // Get data from product
-      const data = {
-        idProduct: product.id,
-        idSeller: product.user.id,
-        price: product.price,
-      };
-
-      console.log(data);
-
-      // Data body
-      const body = JSON.stringify(data);
-
-      // Configuration
-      const config = {
-        method: "POST",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-          "Content-type": "application/json",
-        },
-        body,
-      };
-
-      // Insert transaction data
-      await api.post("/transaction", config);
-
-      history.push("/profile");
-    } catch (error) {
-      console.log(error);
-    }
-  });
+  // Create function for handle buying process with useMutation here ...
 
   return (
     <div>
@@ -82,12 +39,7 @@ export default function DetailProduct() {
               {convertRupiah.convert(product?.price)}
             </div>
             <div className="d-grid gap-2 mt-5">
-              <button
-                onClick={() => handleBuy.mutate()}
-                className="btn btn-buy"
-              >
-                Buy
-              </button>
+              {/* Create button buy and handle with mutate here ... */}
             </div>
           </Col>
         </Row>

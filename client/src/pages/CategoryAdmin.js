@@ -8,11 +8,9 @@ import DeleteData from "../components/modal/DeleteData";
 import dataCategory from "../fakeData/category";
 import imgEmpty from "../assets/empty.svg";
 
-// Import useQuery
-import { useQuery } from "react-query";
+// Import useQuery here ...
 
-// Get API config
-import { API } from "../config/api";
+// Get API config here ...
 
 export default function CategoryAdmin() {
   const title = "Category admin";
@@ -29,11 +27,7 @@ export default function CategoryAdmin() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // Fetching categories data from database
-  let { data: categories, refetch } = useQuery("categoriesCache", async () => {
-    const response = await api.get("/categories");
-    return response.data;
-  });
+  // Create process for fetching categories data from database with useQuery here ...
 
   const handleEdit = (id) => {
     history.push(`edit-category/${id}`);
