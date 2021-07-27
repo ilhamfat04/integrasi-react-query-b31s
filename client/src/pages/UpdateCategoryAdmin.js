@@ -6,6 +6,10 @@ import NavbarAdmin from "../components/NavbarAdmin";
 
 import dataCategory from "../fakeData/category";
 
+// Import useQuery and useMutation
+import { useQuery, useMutation } from "react-query";
+
+// Get API config
 import { API } from "../config/api";
 
 export default function UpdateCategoryAdmin() {
@@ -13,19 +17,16 @@ export default function UpdateCategoryAdmin() {
   document.title = "DumbMerch | " + title;
 
   let history = useHistory();
+  let api = API();
   const { id } = useParams();
+
   const [category, setCategory] = useState({ name: "" });
 
   // Fetching category data by id from database
-  const getCategory = async (id) => {
-    try {
-      const response = await API.get("/category/" + id);
-      // Store product data to useState variabel
-      setCategory({ name: response.data.data.name });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  let { refetch } = useQuery("categoryCache", async () => {
+    const response = await api.get("/category/" + id);
+    setCategory({ name: response.data.name });
+  });
 
   const handleChange = (e) => {
     setCategory({
@@ -34,34 +35,30 @@ export default function UpdateCategoryAdmin() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useMutation(async (e) => {
     try {
       e.preventDefault();
-
-      // Configuration
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
 
       // Data body
       const body = JSON.stringify(category);
 
-      // Insert category data
-      const response = await API.patch("/category/" + id, body, config);
+      // Configuration
+      const config = {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body,
+      };
 
-      console.log(response.data);
+      // Insert category data
+      const response = await api.patch("/category/" + id, config);
 
       history.push("/category-admin");
     } catch (error) {
       console.log(error);
     }
-  };
-
-  useEffect(() => {
-    getCategory(id);
-  }, []);
+  });
 
   return (
     <>
@@ -72,7 +69,7 @@ export default function UpdateCategoryAdmin() {
             <div className="text-header-category mb-4">Edit Category</div>
           </Col>
           <Col xs="12">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSubmit.mutate(e)}>
               <input
                 onChange={handleChange}
                 value={category.name}
