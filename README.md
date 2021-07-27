@@ -4,6 +4,13 @@
 
   > File : `client/src/pages/ProductAdmin.js`
 
+  Import useQuery and useMutation :
+
+  ```javascript
+  // Import useQuery and useMutation
+  import { useQuery, useMutation } from "react-query";
+  ```
+
   Get API config :
 
   ```javascript
@@ -42,14 +49,20 @@
 
   ```javascript
   // If confirm is true, execute delete data
-  const deleteById = async (id) => {
+  const deleteById = useMutation(async (id) => {
     try {
-      await API.delete(`/product/${id}`);
-      getProducts();
+      const config = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      await api.delete(`/product/${id}`, config);
+      refetch();
     } catch (error) {
       console.log(error);
     }
-  };
+  });
   ```
 
   Close modal and execute delete data :
@@ -60,7 +73,7 @@
       // Close modal confirm delete data
       handleClose();
       // execute delete data by id function
-      deleteById(idDelete);
+      deleteById.mutate(idDelete);
       setConfirmDelete(null);
     }
   }, [confirmDelete]);
@@ -69,6 +82,13 @@
 - Delete category data
 
   > File : `client/src/pages/CategoryAdmin.js`
+
+  Import useQuery and useMutation :
+
+  ```javascript
+  // Import useQuery and useMutation
+  import { useQuery, useMutation } from "react-query";
+  ```
 
   Get API config :
 
@@ -108,14 +128,20 @@
 
   ```javascript
   // If confirm is true, execute delete data
-  const deleteById = async (id) => {
+  const deleteById = useMutation(async (id) => {
     try {
-      await API.delete(`/category/${id}`);
-      getCategories();
+      const config = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      await api.delete(`/category/${id}`, config);
+      refetch();
     } catch (error) {
       console.log(error);
     }
-  };
+  });
   ```
 
   Close modal and execute delete data :
@@ -126,7 +152,7 @@
       // Close modal confirm delete data
       handleClose();
       // execute delete data by id function
-      deleteById(idDelete);
+      deleteById.mutate(idDelete);
       setConfirmDelete(null);
     }
   }, [confirmDelete]);

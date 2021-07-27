@@ -6,10 +6,11 @@ import NavbarAdmin from "../components/NavbarAdmin";
 import DeleteData from "../components/modal/DeleteData";
 
 import dataCategory from "../fakeData/category";
+
 import imgEmpty from "../assets/empty.svg";
 
-// Import useQuery
-import { useQuery } from "react-query";
+// Import useQuery and useMutation
+import { useQuery, useMutation } from "react-query";
 
 // Get API config
 import { API } from "../config/api";
@@ -21,7 +22,7 @@ export default function CategoryAdmin() {
   let history = useHistory();
   let api = API();
 
-  const [category, setCategory] = useState(dataCategory);
+  // Variabel for delete category data
   const [idDelete, setIdDelete] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
 
@@ -39,18 +40,34 @@ export default function CategoryAdmin() {
     history.push(`edit-category/${id}`);
   };
 
+  // For get id category & show modal confirm delete data
   const handleDelete = (id) => {
     setIdDelete(id);
     handleShow();
   };
 
+  // If confirm is true, execute delete data
+  const deleteById = useMutation(async (id) => {
+    try {
+      const config = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      await api.delete(`/category/${id}`, config);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   useEffect(() => {
     if (confirmDelete) {
+      // Close modal confirm delete data
       handleClose();
-      console.log(idDelete);
-
-      setCategory(category.filter((item) => item.id != idDelete));
-
+      // execute delete data by id function
+      deleteById.mutate(idDelete);
       setConfirmDelete(null);
     }
   }, [confirmDelete]);

@@ -11,8 +11,8 @@ import imgEmpty from "../assets/empty.svg";
 
 import dataProduct from "../fakeData/product";
 
-// Import useQuery
-import { useQuery } from "react-query";
+// Import useQuery and useMutation
+import { useQuery, useMutation } from "react-query";
 
 // API config
 import { API } from "../config/api";
@@ -20,6 +20,18 @@ import { API } from "../config/api";
 export default function ProductAdmin() {
   let history = useHistory();
   let api = API();
+
+  // Variabel for delete product data
+  const [idDelete, setIdDelete] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null);
+
+  // Modal Confirm delete data
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const title = "Product admin";
+  document.title = "DumbMerch | " + title;
 
   // Fetching product data from database
   let { data: products, refetch } = useQuery("productsCache", async () => {
@@ -33,17 +45,6 @@ export default function ProductAdmin() {
     return response.data;
   });
 
-  const [product, setProduct] = useState(dataProduct);
-  const [idDelete, setIdDelete] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
-
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const title = "Product admin";
-  document.title = "DumbMerch | " + title;
-
   const addProduct = () => {
     history.push("/add-product");
   };
@@ -52,18 +53,34 @@ export default function ProductAdmin() {
     history.push("/edit-product/" + id);
   };
 
+  // For get id product & show modal confirm delete data
   const handleDelete = (id) => {
     setIdDelete(id);
     handleShow();
   };
 
+  // If confirm is true, execute delete data
+  const deleteById = useMutation(async (id) => {
+    try {
+      const config = {
+        method: "DELETE",
+        headers: {
+          Authorization: "Basic " + localStorage.token,
+        },
+      };
+      await api.delete(`/product/${id}`, config);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   useEffect(() => {
     if (confirmDelete) {
+      // Close modal confirm delete data
       handleClose();
-      console.log(idDelete);
-
-      setProduct(product.filter((item) => item.id != idDelete));
-
+      // execute delete data by id function
+      deleteById.mutate(idDelete);
       setConfirmDelete(null);
     }
   }, [confirmDelete]);
