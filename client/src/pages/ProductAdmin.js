@@ -21,7 +21,7 @@ export default function ProductAdmin() {
   let history = useHistory();
   let api = API();
 
-  // Fetching categories data from database
+  // Fetching product data from database
   let { data: products, refetch } = useQuery("productsCache", async () => {
     const config = {
       method: "GET",

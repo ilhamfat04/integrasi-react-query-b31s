@@ -7,8 +7,8 @@ import Navbar from "../components/Navbar";
 
 import dataProduct from "../fakeData/product";
 
-// Import useQuery
-import { useQuery } from "react-query";
+// Import useQuery and useMutation
+import { useQuery, useMutation } from "react-query";
 
 // API config
 import { API } from "../config/api";
@@ -30,10 +30,8 @@ export default function DetailProduct() {
     return response.data;
   });
 
-  const handleBuy = async (e) => {
+  const handleBuy = useMutation(async () => {
     try {
-      e.preventDefault();
-
       // Get data from product
       const data = {
         idProduct: product.id,
@@ -63,7 +61,7 @@ export default function DetailProduct() {
     } catch (error) {
       console.log(error);
     }
-  };
+  });
 
   return (
     <div>
@@ -84,7 +82,10 @@ export default function DetailProduct() {
               {convertRupiah.convert(product?.price)}
             </div>
             <div className="d-grid gap-2 mt-5">
-              <button onClick={handleBuy} className="btn btn-buy">
+              <button
+                onClick={() => handleBuy.mutate()}
+                className="btn btn-buy"
+              >
                 Buy
               </button>
             </div>

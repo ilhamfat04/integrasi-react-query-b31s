@@ -22,7 +22,7 @@ export default function Product() {
   const title = "Shop";
   document.title = "DumbMerch | " + title;
 
-  // Fetching categories data from database
+  // Fetching product data from database
   let { data: products, refetch } = useQuery("productsCache", async () => {
     const config = {
       method: "GET",
