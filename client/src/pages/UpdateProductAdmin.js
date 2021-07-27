@@ -33,8 +33,6 @@ export default function UpdateProductAdmin() {
     qty: "",
   }); //Store product data
 
-  console.log(preview);
-
   // Fetching detail product data by id from database
   let { productRefetch } = useQuery("productCache", async () => {
     const config = {
@@ -43,13 +41,12 @@ export default function UpdateProductAdmin() {
       },
     };
     const response = await api.get("/product/" + id, config);
-    setPreview(response.data.image);
     setForm({
-      ...form,
       name: response.data.name,
       desc: response.data.desc,
       price: response.data.price,
       qty: response.data.qty,
+      image: response.data.image,
     });
     setProduct(response.data);
   });
@@ -79,27 +76,15 @@ export default function UpdateProductAdmin() {
 
   // Handle change data on form
   const handleChange = (e) => {
-    // setForm({
-    //   ...form,
-    //   [e.target.name]:
-    //     e.target.type === "file" ? e.target.files : e.target.value,
-    // });
-
-    const data = {
-      [e.target.name]: e.target.files,
-    };
-
-    console.log(e.target.type);
-    console.log(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.value);
-    console.log(e.target.name);
-
-    console.log(data);
+    setForm({
+      ...form,
+      [e.target.name]:
+        e.target.type === "file" ? e.target.files : e.target.value,
+    });
 
     // Create image url for preview
     if (e.target.type === "file") {
-      let url = URL.createObjectURL(e.target.files[0]);
-      setPreview(url);
+      setPreview(e.target.files);
     }
   };
 
@@ -109,8 +94,8 @@ export default function UpdateProductAdmin() {
 
       // Store data with FormData as object
       const formData = new FormData();
-      if (form.image) {
-        formData.set("image", form?.image[0], form?.image[0]?.name);
+      if (preview) {
+        formData.set("image", preview[0], preview[0]?.name);
       }
       formData.set("name", form.name);
       formData.set("desc", form.desc);
@@ -129,7 +114,6 @@ export default function UpdateProductAdmin() {
 
       // Insert product data
       const response = await api.patch("/product/" + product.id, config);
-      console.log(response.data);
 
       history.push("/product-admin");
     } catch (error) {
@@ -155,10 +139,21 @@ export default function UpdateProductAdmin() {
           </Col>
           <Col xs="12">
             <form onSubmit={(e) => handleSubmit.mutate(e)}>
-              {preview && (
+              {!preview ? (
                 <div>
                   <img
-                    src={preview}
+                    src={form.image}
+                    style={{
+                      maxWidth: "150px",
+                      maxHeight: "150px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src={URL.createObjectURL(preview[0])}
                     style={{
                       maxWidth: "150px",
                       maxHeight: "150px",
