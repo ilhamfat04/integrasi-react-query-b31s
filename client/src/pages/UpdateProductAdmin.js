@@ -62,7 +62,7 @@ export default function UpdateProductAdmin() {
     const id = e.target.value;
     const checked = e.target.checked;
 
-    if (checked == true) {
+    if (checked) {
       // Save category id if checked
       setCategoryId([...categoryId, parseInt(id)]);
     } else {
@@ -78,8 +78,7 @@ export default function UpdateProductAdmin() {
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value,
+      [e.target.name]: e.target.type === "file" ? e.target.files : e.target.value,
     });
 
     // Create image url for preview
@@ -148,6 +147,7 @@ export default function UpdateProductAdmin() {
                       maxHeight: "150px",
                       objectFit: "cover",
                     }}
+                    alt="preview"
                   />
                 </div>
               ) : (
@@ -159,16 +159,11 @@ export default function UpdateProductAdmin() {
                       maxHeight: "150px",
                       objectFit: "cover",
                     }}
+                    alt="preview"
                   />
                 </div>
               )}
-              <input
-                type="file"
-                id="upload"
-                name="image"
-                hidden
-                onChange={handleChange}
-              />
+              <input type="file" id="upload" name="image" hidden onChange={handleChange} />
               <label for="upload" className="label-file-add-product">
                 Upload file
               </label>
@@ -206,15 +201,12 @@ export default function UpdateProductAdmin() {
               />
 
               <div className="card-form-input mt-4 px-2 py-1 pb-2">
-                <div
-                  className="text-secondary mb-1"
-                  style={{ fontSize: "15px" }}
-                >
+                <div className="text-secondary mb-1" style={{ fontSize: "15px" }}>
                   Category
                 </div>
                 {product &&
-                  categories.map((item) => (
-                    <label class="checkbox-inline me-4">
+                  categories.map((item, index) => (
+                    <label key={index} className="checkbox-inline me-4">
                       <CheckBox
                         categoryId={categoryId}
                         value={item.id}
