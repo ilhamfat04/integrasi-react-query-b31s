@@ -27,34 +27,28 @@ export default function Profile() {
   const [state] = useContext(UserContext);
 
   // Fetching profile data from database
-  let { data: profile, refetch: profileRefetch } = useQuery(
-    "profileCache",
-    async () => {
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-      };
-      const response = await api.get("/profile", config);
-      return response.data;
-    }
-  );
+  let { data: profile, refetch: profileRefetch } = useQuery("profileCache", async () => {
+    const config = {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + localStorage.token,
+      },
+    };
+    const response = await api.get("/profile", config);
+    return response.data;
+  });
 
   // Fetching transactions data from database
-  let { data: transactions, refetch: transactionsRefetch } = useQuery(
-    "transactionsCache",
-    async () => {
-      const config = {
-        method: "GET",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-      };
-      const response = await api.get("/transactions", config);
-      return response.data;
-    }
-  );
+  let { data: transactions, refetch: transactionsRefetch } = useQuery("transactionsCache", async () => {
+    const config = {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + localStorage.token,
+      },
+    };
+    const response = await api.get("/transactions", config);
+    return response.data;
+  });
 
   return (
     <>
@@ -65,10 +59,7 @@ export default function Profile() {
             <div className="text-header-product mb-4">My Profile</div>
             <Row>
               <Col md="6">
-                <img
-                  src={profile?.image ? profile.image : imgBlank}
-                  className="img-fluid rounded"
-                />
+                <img src={profile?.image ? profile.image : imgBlank} className="img-fluid rounded" alt="avatar" />
               </Col>
               <Col md="6">
                 <div className="profile-header">Name</div>
@@ -78,28 +69,22 @@ export default function Profile() {
                 <div className="profile-content">{state.user.email}</div>
 
                 <div className="profile-header">Phone</div>
-                <div className="profile-content">
-                  {profile?.phone ? profile?.phone : "-"}
-                </div>
+                <div className="profile-content">{profile?.phone ? profile?.phone : "-"}</div>
 
                 <div className="profile-header">Gender</div>
-                <div className="profile-content">
-                  {profile?.gender ? profile?.gender : "-"}
-                </div>
+                <div className="profile-content">{profile?.gender ? profile?.gender : "-"}</div>
 
                 <div className="profile-header">Address</div>
-                <div className="profile-content">
-                  {profile?.address ? profile?.address : "-"}
-                </div>
+                <div className="profile-content">{profile?.address ? profile?.address : "-"}</div>
               </Col>
             </Row>
           </Col>
           <Col md="6">
             <div className="text-header-product mb-4">My Transaction</div>
-            {transactions?.length != 0 ? (
+            {transactions?.length !== 0 ? (
               <>
-                {transactions?.map((item) => (
-                  <div style={{ background: "#303030" }} className="p-2 mb-1">
+                {transactions?.map((item, index) => (
+                  <div key={index} style={{ background: "#303030" }} className="p-2 mb-1">
                     <Container fluid className="px-1">
                       <Row>
                         <Col xs="3">
@@ -158,12 +143,7 @@ export default function Profile() {
                           </div>
                         </Col>
                         <Col xs="3">
-                          <img
-                            src={imgDumbMerch}
-                            alt="img"
-                            className="img-fluid"
-                            style={{ maxHeight: "120px" }}
-                          />
+                          <img src={imgDumbMerch} alt="img" className="img-fluid" style={{ maxHeight: "120px" }} />
                         </Col>
                       </Row>
                     </Container>
