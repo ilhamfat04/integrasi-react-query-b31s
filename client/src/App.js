@@ -24,13 +24,13 @@ function App() {
 
   useEffect(() => {
     // Redirect Auth
-    if (state.isLogin == false) {
+    if (!state.isLogin) {
       history.push("/auth");
     } else {
-      if (state.user.status == "admin") {
+      if (state.user.status === "admin") {
         history.push("/complain-admin");
         // history.push("/complain-admin");
-      } else if (state.user.status == "customer") {
+      } else if (state.user.status === "customer") {
         history.push("/");
       }
     }
