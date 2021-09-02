@@ -63,7 +63,7 @@ export default function Login() {
         });
 
         // Status check
-        if (response.data.status == "admin") {
+        if (response.data.status === "admin") {
           history.push("/complain-admin");
         } else {
           history.push("/");
@@ -97,10 +97,7 @@ export default function Login() {
   return (
     <div className="d-flex justify-content-center">
       <div className="card-auth p-4">
-        <div
-          style={{ fontSize: "36px", lineHeight: "49px", fontWeight: "700" }}
-          className="mb-3"
-        >
+        <div style={{ fontSize: "36px", lineHeight: "49px", fontWeight: "700" }} className="mb-3">
           Login
         </div>
         {message && message}
