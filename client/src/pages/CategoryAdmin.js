@@ -10,10 +10,8 @@ import dataCategory from "../fakeData/category";
 import imgEmpty from "../assets/empty.svg";
 
 // Import useQuery and useMutation here ...
-import { useQuery, useMutation } from "react-query";
 
 // Get API config here ...
-import { API } from "../config/api";
 
 export default function CategoryAdmin() {
   const title = "Category admin";
@@ -23,13 +21,8 @@ export default function CategoryAdmin() {
   let api = API();
 
   // Create variabel for delete category data with useState here ...
-  const [idDelete, setIdDelete] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null);
-  
+
   // Init useState & function for handle show-hide modal confirm here ...
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   // Fetching categories data from database
   let { data: categories, refetch } = useQuery("categoriesCache", async () => {
@@ -42,36 +35,11 @@ export default function CategoryAdmin() {
   };
 
   // Create function handle get category id & show modal confirm delete data here ...
-  const handleDelete = (id) => {
-    setIdDelete(id);
-    handleShow();
-  };
+
   // Create function for handle delete category with useMutation here ...
-  const deleteById = useMutation(async (id) => {
-    try {
-      const config = {
-        method: "DELETE",
-        headers: {
-          Authorization: "Basic " + localStorage.token,
-        },
-      };
-      await api.delete(`/category/${id}`, config);
-      refetch();
-    } catch (error) {
-      console.log(error);
-    }
-  });
   // If confirm is true, execute delete data
+
   // Call function for handle close modal and execute delete data with useEffect here ...
-  useEffect(() => {
-    if (confirmDelete) {
-      // Close modal confirm delete data
-      handleClose();
-      // execute delete data by id function
-      deleteById.mutate(idDelete);
-      setConfirmDelete(null);
-    }
-  }, [confirmDelete]);
 
   const addCategory = () => {
     history.push("/add-category");
