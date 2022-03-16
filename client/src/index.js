@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // Init QueryClient and QueryClientProvider from react-query here ...
+import { QueryClient, QueryClientProvider } from "react-query"
 
 import "./index.css";
 import App from "./App";
@@ -17,14 +18,17 @@ const favicon = document.getElementById("idFavicon");
 favicon.setAttribute("href", Favicon);
 
 // Init Client from QueryClient() here ...
+const client = new QueryClient()
 
 ReactDOM.render(
   <React.StrictMode>
     <UserContextProvider>
       {/* Add opening QueryClientProvider component and client as props */}
-      <Router>
-        <App />
-      </Router>
+      <QueryClientProvider client={client}>
+        <Router>
+          <App />
+        </Router>
+      </QueryClientProvider>
       {/* Add closing QueryClientProvider component */}
     </UserContextProvider>
   </React.StrictMode>,
