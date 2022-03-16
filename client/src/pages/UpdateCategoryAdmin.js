@@ -7,8 +7,10 @@ import NavbarAdmin from "../components/NavbarAdmin";
 import dataCategory from "../fakeData/category";
 
 // Import useQuery and useMutation here ...
+import { useQuery, useMutation } from "react-query";
 
-// Get API config here ...
+// Import API config
+import { API } from "../config/api";
 
 export default function UpdateCategoryAdmin() {
   const title = "Category admin";
@@ -19,8 +21,16 @@ export default function UpdateCategoryAdmin() {
   const { id } = useParams();
 
   // Create variabel for store data with useState here ...
+  const [category, setCategory] = useState({ name: "" });
+  // state category = database
+  // kalau ada perubahan
+  // state category = inputan
 
-  // Create process for handle fetching category data by id from database with useQuery here ...
+  // Create process for handle fetching category data by id from database with useQuery here ...e
+  let { refetch } = useQuery("categoryCache", async () => {
+    const response = await api.get("/category/" + id);
+    setCategory({ name: response.data.name });
+  });
 
   const handleChange = (e) => {
     setCategory({
@@ -30,6 +40,30 @@ export default function UpdateCategoryAdmin() {
   };
 
   // Create function for handle insert new product data with useMutation here ...
+  const handleSubmit = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+
+      // Data body
+      const body = JSON.stringify(category);
+
+      // Configuration
+      const config = {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body,
+      };
+
+      // consume API
+      const response = await api.patch("/category/" + id, config);
+
+      history.push("/category-admin");
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   return (
     <>
